@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'java'
     id 'checkstyle'
+    id 'jacoco'
 }
 
 group = 'com.fq.www'
@@ -37,3 +38,45 @@ checkstyle {
 }
 
 checkstyleTest.enabled = false
+
+jacocoTestReport {
+    reports {
+        html.enabled = true
+        xml.enabled = false
+        csv.enabled = false
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            element = 'CLASS'
+            excludes = [
+                    '**.AppRunner'
+            ]
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.1
+            }
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.1
+            }
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.1
+            }
+            limit {
+                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+                minimum = 0.1
+            }
+        }
+    }
+}
+check.dependsOn jacocoTestCoverageVerification
+jacocoTestCoverageVerification.dependsOn jacocoTestReport
